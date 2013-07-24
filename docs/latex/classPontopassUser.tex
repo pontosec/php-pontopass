@@ -1,0 +1,162 @@
+\hypertarget{classPontopassUser}{\section{Referência à classe Pontopass\-User}
+\label{classPontopassUser}\index{Pontopass\-User@{Pontopass\-User}}
+}
+Diagrama de heranças da classe Pontopass\-User\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classPontopassUser}
+\end{center}
+\end{figure}
+\subsection*{Membros públicos}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classPontopassUser_ac357568a924218947ad8d56608ebd54a}{create} (\$name=\char`\"{}\char`\"{})
+\item 
+\hyperlink{classPontopassUser_aa07fc177a4efec331e7919ad847b2a02}{delete} ()
+\item 
+\hyperlink{classPontopassUser_afae4d293eefebe500c3f6937755cb1db}{insert\-Device} (\$type, \$phone, \$desc=null)
+\item 
+\hyperlink{classPontopassUser_aa801f31c2272a106c99cae5e8d95560e}{delete\-Device} (\$methodid)
+\item 
+\hyperlink{classPontopassUser_a354d501dc79433784c236dbf46c6641a}{check\-Method} (\$methodid)
+\item 
+\hyperlink{classPontopassUser_a054a98aa1525a632f5ccffe3d2776e72}{exists} ()
+\item 
+\hyperlink{classPontopassUser_af9b7615674b739effeff9c9eca361939}{list\-Methods} ()
+\end{DoxyCompactItemize}
+\subsection*{Atributos Públicos}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classPontopassUser_a396a17b0b901b42078dd38c5fecde6e6}{{\bfseries \$login}}\label{classPontopassUser_a396a17b0b901b42078dd38c5fecde6e6}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Descrição detalhada}
+Auxilia o gerenciamento de usuarios e dispositivos cadastrados na base do Pontopass \begin{DoxyVersion}{Versão}
+1.\-0 
+\end{DoxyVersion}
+
+
+\subsection{Documentação dos métodos}
+\hypertarget{classPontopassUser_a354d501dc79433784c236dbf46c6641a}{\index{Pontopass\-User@{Pontopass\-User}!check\-Method@{check\-Method}}
+\index{check\-Method@{check\-Method}!PontopassUser@{Pontopass\-User}}
+\subsubsection[{check\-Method}]{\setlength{\rightskip}{0pt plus 5cm}Pontopass\-User\-::check\-Method (
+\begin{DoxyParamCaption}
+\item[{}]{\$methodid}
+\end{DoxyParamCaption}
+)}}\label{classPontopassUser_a354d501dc79433784c236dbf46c6641a}
+Verifica se determinado dispositivo (methodid) pertence a um usuario
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+int & {\em \$methodid} & I\-D do dispositivo a ser verificado \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+int Status Code da operacao retornado pelo Web\-Service  public 
+\end{DoxyReturn}
+\hypertarget{classPontopassUser_ac357568a924218947ad8d56608ebd54a}{\index{Pontopass\-User@{Pontopass\-User}!create@{create}}
+\index{create@{create}!PontopassUser@{Pontopass\-User}}
+\subsubsection[{create}]{\setlength{\rightskip}{0pt plus 5cm}Pontopass\-User\-::create (
+\begin{DoxyParamCaption}
+\item[{}]{\$name = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)}}\label{classPontopassUser_ac357568a924218947ad8d56608ebd54a}
+Cadastra novo usuario
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+string | null & {\em \$name} & Nome do Usuario (ou outra informacao para identifica-\/lo) -\/ Opcional \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+int Status Code da operacao retornado pelo Web\-Service  public 
+\end{DoxyReturn}
+\hypertarget{classPontopassUser_aa07fc177a4efec331e7919ad847b2a02}{\index{Pontopass\-User@{Pontopass\-User}!delete@{delete}}
+\index{delete@{delete}!PontopassUser@{Pontopass\-User}}
+\subsubsection[{delete}]{\setlength{\rightskip}{0pt plus 5cm}Pontopass\-User\-::delete (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classPontopassUser_aa07fc177a4efec331e7919ad847b2a02}
+Deleta Usuario
+
+\begin{DoxyReturn}{Retorna}
+int Status Code da operacao retornado pelo Web\-Service  public 
+\end{DoxyReturn}
+\hypertarget{classPontopassUser_aa801f31c2272a106c99cae5e8d95560e}{\index{Pontopass\-User@{Pontopass\-User}!delete\-Device@{delete\-Device}}
+\index{delete\-Device@{delete\-Device}!PontopassUser@{Pontopass\-User}}
+\subsubsection[{delete\-Device}]{\setlength{\rightskip}{0pt plus 5cm}Pontopass\-User\-::delete\-Device (
+\begin{DoxyParamCaption}
+\item[{}]{\$methodid}
+\end{DoxyParamCaption}
+)}}\label{classPontopassUser_aa801f31c2272a106c99cae5e8d95560e}
+Cadastra dispositivo do usuario
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+int & {\em \$methodid} & I\-D do dispositivo a ser removido \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+int Status Code da operacao retornado pelo Web\-Service  public 
+\end{DoxyReturn}
+\hypertarget{classPontopassUser_a054a98aa1525a632f5ccffe3d2776e72}{\index{Pontopass\-User@{Pontopass\-User}!exists@{exists}}
+\index{exists@{exists}!PontopassUser@{Pontopass\-User}}
+\subsubsection[{exists}]{\setlength{\rightskip}{0pt plus 5cm}Pontopass\-User\-::exists (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classPontopassUser_a054a98aa1525a632f5ccffe3d2776e72}
+Verifica se determinado login esta cadastrado na base de usuarios do Pontopass
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+int & {\em \$methodid} & I\-D do dispositivo a ser verificado \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+int Status Code da operacao retornado pelo Web\-Service  public 
+\end{DoxyReturn}
+\hypertarget{classPontopassUser_afae4d293eefebe500c3f6937755cb1db}{\index{Pontopass\-User@{Pontopass\-User}!insert\-Device@{insert\-Device}}
+\index{insert\-Device@{insert\-Device}!PontopassUser@{Pontopass\-User}}
+\subsubsection[{insert\-Device}]{\setlength{\rightskip}{0pt plus 5cm}Pontopass\-User\-::insert\-Device (
+\begin{DoxyParamCaption}
+\item[{}]{\$type, }
+\item[{}]{\$phone, }
+\item[{}]{\$desc = {\ttfamily null}}
+\end{DoxyParamCaption}
+)}}\label{classPontopassUser_afae4d293eefebe500c3f6937755cb1db}
+Cadastra dispositivo do usuario
+
+
+\begin{DoxyParams}[1]{Parâmetros}
+int & {\em \$type} & Forma de Autenticacao a ser utilizada (1 para ligacao telefonica, 2 para codigo por sms, 3 para confirmacao por app mobile, 4 por codigo de mobile token) \\
+\hline
+string & {\em \$phone} & Telefone do Usuario, incluindo codigo do pais e da cidade, sem 0 de prefixo, sem + de prefixo. \\
+\hline
+string | null & {\em \$desc} & Descricao do Dispositivo (ex\-: Celular do Roberto) -\/ Opcional \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Retorna}
+int Status Code da operacao retornado pelo Web\-Service  public 
+\end{DoxyReturn}
+\hypertarget{classPontopassUser_af9b7615674b739effeff9c9eca361939}{\index{Pontopass\-User@{Pontopass\-User}!list\-Methods@{list\-Methods}}
+\index{list\-Methods@{list\-Methods}!PontopassUser@{Pontopass\-User}}
+\subsubsection[{list\-Methods}]{\setlength{\rightskip}{0pt plus 5cm}Pontopass\-User\-::list\-Methods (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classPontopassUser_af9b7615674b739effeff9c9eca361939}
+Lista dispositivos de um usuario
+
+\begin{DoxyReturn}{Retorna}
+object Relacao de Dispositivos do Usuario  public 
+\end{DoxyReturn}
+
+
+A documentação para esta classe foi gerada a partir do seguinte ficheiro\-:\begin{DoxyCompactItemize}
+\item 
+pontopass\-\_\-sdk.\-php\end{DoxyCompactItemize}
