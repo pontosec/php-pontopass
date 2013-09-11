@@ -18,7 +18,7 @@
 
 /*! @class PontopassAuth
     @abstract Integracao com WebService do Pontopass para confirmar a autenticacao de um usuario
-    @version 1.0
+    @version 1.0.1
 */
 class PontopassAuth {
 
@@ -56,7 +56,7 @@ private static $api_server = "api.pontopass.com";
 *
 * @var string
 */
-private static $frameurl = "http://pontopass.com/demo/js/frame.html";
+private static $frameurl = "https://widget.pontopass.com/v1.0.0/widget";
 
 
 
@@ -180,7 +180,7 @@ private $statustxt = Array(0 => "Sucesso",
 * @param bool|null $user_remember TRUE para gravar a sessao do usuario em cookie, FALSE para nao gravar a sessao.
 * @param string|null $user_remember IP do Usuario (quando nao preenchido, obtido diretamente do request http)
 * @param string|null $user_agent User Agent do navegador do usuario (quando nao preenchido, obtido diretamente do request http)
-* @return int Status Code
+* @return bool Operação realizada com sucesso (true/false)
 * @access public
 */
    public function init($username,$use_widget=TRUE,$user_remember=FALSE,$user_ip=null,$user_agent=null) {
@@ -191,10 +191,10 @@ private $statustxt = Array(0 => "Sucesso",
 		$this->user = $username;
    
 
-		$ret = $this->send("init/$username/$this->integration_type/$this->user_remember/$this->user_ip/".urlencode($this->user_agent));
+		$ret = $this->send("init/".rawurlencode($username)."/$this->integration_type/$this->user_remember/$this->user_ip/".rawurlencode($this->user_agent));
 		
 		if(isset($ret->session)) { $this->user_session = $ret->session; }
-		return ($ret->status)?$ret->status:999;
+		return ($ret->status == 0);
 		
 
 			
@@ -209,7 +209,7 @@ private $statustxt = Array(0 => "Sucesso",
 */	
  public function listMethods() {
 	   if(isset($this->user_session)) {
-		$ret = $this->send("list/$this->user_session/$this->user_ip/".urlencode($this->user_agent));
+		$ret = $this->send("list/$this->user_session/$this->user_ip/".rawurlencode($this->user_agent));
 		
 		
 		return $ret;
@@ -228,21 +228,21 @@ private $statustxt = Array(0 => "Sucesso",
 * Solicita ao Pontopass que confirme a autenticacao do usuario utilizando determinado metodo
 *
 * @param int $device_id ID da forma de autenticacao a ser utilizada (obtida, por exemplo, pelo listMethods)
-* @return int Status Code retornado pelo WebService
+* @return bool Operação realizada com sucesso 
 * @access public
 */	   
    public function ask($device_id) {
 	   if(isset($this->user_session)) {
-		$ret = $this->send("ask/$this->user_session/$device_id/$this->user_ip/".urlencode($this->user_agent));
+		$ret = $this->send("ask/$this->user_session/$device_id/$this->user_ip/".rawurlencode($this->user_agent));
 				
 		
 		
-		return ($ret->status)?$ret->status:999;
+		return ($ret->status == 0);
 
 
 		} else {
 		trigger_error("Sessao não iniciada ou não definida", E_WARNING); 
-		return 999;
+		return false;
 		}
 			
    
@@ -254,7 +254,7 @@ private $statustxt = Array(0 => "Sucesso",
 *
 * @param int $answer Codigo de Confirmacao
 * @param int $token_type Codigo do tipo de confirmacao utilizado:  2 para SMS; 4 para Mobile Token
-* @return int Status Code retornado pelo WebService
+* @return bool Operação realizada com sucesso 
 * @access public
 */	   
      public function validate($answer,$token_type) {
@@ -262,16 +262,16 @@ private $statustxt = Array(0 => "Sucesso",
 
 	   if(isset($this->user_session)) {
 		
-		$url = "validate/".$this->token_type[$token_type]."/$this->user_session/$answer/$this->user_ip/".urlencode($this->user_agent);
+		$url = "validate/".$this->token_type[$token_type]."/$this->user_session/$answer/$this->user_ip/".rawurlencode($this->user_agent);
 		$ret = $this->send($url);
 		
 
 		
-		return ($ret->status)?$ret->status:999;
+		return ($ret->status == 0);
 
 		} else {
 		trigger_error("Sessao não iniciada ou não definida", E_WARNING); 
-		return 999;
+		return false;
 		}
 			
    
@@ -293,14 +293,14 @@ private $statustxt = Array(0 => "Sucesso",
    public function widget($h=500,$w=500,$return_url,$return_method="POST",$post=array(),$get=array()) {
 	$postparams = $getparams = "";
 	if(!empty($post)) { 
-	foreach ($post as $key => $value) $postparams .= "post_$key=".urlencode($value)."&";
+	foreach ($post as $key => $value) $postparams .= "post_$key=".rawurlencode($value)."&";
 	}
 
 	if(!empty($get)) { 
-	foreach ($get as $key => $value) $getparams .= "get_$key=".urlencode($value)."&";
+	foreach ($get as $key => $value) $getparams .= "get_$key=".rawurlencode($value)."&";
 	}
 
-		$url = self::$frameurl."?#pontopass_save=$this->user_remember&pontopass_url=".urlencode($return_url)."&pontopass_sess=".$this->user_session."&".$postparams.$getparams;
+		$url = self::$frameurl."?#pontopass_save=$this->user_remember&pontopass_url=".rawurlencode($return_url)."&pontopass_sess=".$this->user_session."&".$postparams.$getparams;
 		return "<iframe src='$url' width='$w' height='$h' frameBorder='0'></iframe>";
 		
 	}
@@ -322,9 +322,9 @@ private $statustxt = Array(0 => "Sucesso",
 
 		
 	   if(isset($this->user_session)) {
-	   
-		$ret = $this->send("auth/$this->user_session/$this->user_ip/".urlencode($this->user_agent));
-		return (($ret->user == $username) && ($ret->status == 0));
+	   	
+		$ret = $this->send("auth/$this->user_session/$this->user_ip/".rawurlencode($this->user_agent));
+		return (($ret->user == strtolower($username)) && ($ret->status == 0));
 
 	   } else {
 	   
@@ -338,12 +338,12 @@ private $statustxt = Array(0 => "Sucesso",
 /**
 * Obtem ultimo Status Code da sessao no WebService
 * 
-* @return int Status Code da sessao
+* @return bool Operação realizada com sucesso 
 * @access public
 */	
  public function status() {
-		$ret = $this->send("status/$this->user_session/$this->user_ip/".urlencode($this->user_agent));
-		return ($ret->status)?$ret->status:999;
+		$ret = $this->send("status/$this->user_session/$this->user_ip/".rawurlencode($this->user_agent));
+		return ($ret->status == 0);
 
 	}
 
@@ -367,27 +367,27 @@ public $login;
 * Cadastra novo usuario
 * 
 * @param string|null $name Nome do Usuario (ou outra informacao para identifica-lo) - Opcional
-* @return int Status Code da operacao retornado pelo WebService
+* @return bool Operação realizada com sucesso 
 * @access public
 */	 
 
  public function create($name="") {
  	 	if(empty($this->login)) { trigger_error("Login do usuario a ser manipulado nao definido. ", E_WARNING); return FALSE; }
-		$ret = $this->send("manage/user/insert/$this->login/".urlencode($name));
-		return $ret->status;
+		$ret = $this->send("manage/user/insert/".rawurlencode($this->login)."/".rawurlencode($name));
+		return ($ret->status == 0);
 	}
 
 /**
 * Deleta Usuario
 * 
-* @return int Status Code da operacao retornado pelo WebService
+* @return bool Operação realizada com sucesso 
 * @access public
 */	 
 
  public function delete() {
  	 	if(empty($this->login)) { trigger_error("Login do usuario a ser manipulado nao definido. ", E_WARNING); return FALSE; }
-		$ret = $this->send("manage/user/delete/$this->login");
-		return $ret->status;
+		$ret = $this->send("manage/user/delete/".rawurlencode($this->login));
+		return ($ret->status == 0);
 	}
 
 /**
@@ -396,15 +396,14 @@ public $login;
 * @param int $type Forma de Autenticacao a ser utilizada (1 para ligacao telefonica, 2 para codigo por sms, 3 para confirmacao por app mobile, 4 por codigo de mobile token)
 * @param string $phone Telefone do Usuario, incluindo codigo do pais e da cidade, sem 0 de prefixo, sem + de prefixo.
 * @param string|null $desc Descricao do Dispositivo (ex: Celular do Roberto) - Opcional
-* @return int Status Code da operacao retornado pelo WebService
+* @return bool Operação realizada com sucesso 
 * @access public
 */	 
 
  public function insertDevice($type,$phone,$desc=null) {
  	 	if(empty($this->login)) { trigger_error("Login do usuario a ser manipulado nao definido. ", E_WARNING); return FALSE; }
-		$ret = $this->send("manage/method/insert/$this->login/$type/$phone/".urlencode($desc));
-		print_r($ret);
-		return $ret->status;
+		$ret = $this->send("manage/method/insert/".rawurlencode($this->login)."/$type/$phone/".rawurlencode($desc));
+		return ($ret->status == 0);
 	}
 
 
@@ -412,14 +411,14 @@ public $login;
 * Cadastra dispositivo do usuario
 * 
 * @param int $methodid ID do dispositivo a ser removido
-* @return int Status Code da operacao retornado pelo WebService
+* @return bool Operação realizada com sucesso 
 * @access public
 */	 
 
  public function deleteDevice($methodid) {
  	 	if(empty($this->login)) { trigger_error("Login do usuario a ser manipulado nao definido. ", E_WARNING); return FALSE; }
-		$ret = $this->send("manage/method/delete/$this->login/$methodid");
-		return $ret->status;
+		$ret = $this->send("manage/method/delete/".rawurlencode($this->login)."/$methodid");
+		return ($ret->status == 0);
 	}
 
 
@@ -427,14 +426,14 @@ public $login;
 * Verifica se determinado dispositivo (methodid) pertence a um usuario
 * 
 * @param int $methodid ID do dispositivo a ser verificado
-* @return int Status Code da operacao retornado pelo WebService
+* @return bool Operação realizada com sucesso 
 * @access public
 */	 
 
  public function checkMethod($methodid) {
  	if(empty($this->login)) { trigger_error("Login do usuario a ser manipulado nao definido. ", E_WARNING); return FALSE; }
-		$ret = $this->send("manage/method/check/$this->login/$methodid");
-		return ($ret->status == 0)?true:$ret->status;
+		$ret = $this->send("manage/method/check/".rawurlencode($this->login)."/$methodid");
+		return ($ret->status == 0);
 	}
 
 
@@ -442,14 +441,14 @@ public $login;
 * Verifica se determinado login esta cadastrado na base de usuarios do Pontopass
 * 
 * @param int $methodid ID do dispositivo a ser verificado
-* @return int Status Code da operacao retornado pelo WebService
+* @return bool Operação realizada com sucesso 
 * @access public
 */	 
 
  public function exists() {
  	if(empty($this->login)) { trigger_error("Login do usuario a ser manipulado nao definido. ", E_WARNING); return FALSE; }
-		$ret = $this->send("manage/user/check/$this->login");
-		return ($ret->status == 0)?true:false;
+		$ret = $this->send("manage/user/check/".rawurlencode($this->login));
+		return ($ret->status == 0);
 	}
 
 
@@ -463,7 +462,7 @@ public $login;
 
  public function listMethods() {
  	 	if(empty($this->login)) { trigger_error("Login do usuario a ser manipulado nao definido. ", E_WARNING); return FALSE; }
-		$ret = $this->send("manage/method/list/$this->login");
+		$ret = $this->send("manage/method/list/".rawurlencode($this->login));
 		return $ret;
 	}	
 
